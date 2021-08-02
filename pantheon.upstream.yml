@@ -3,7 +3,16 @@
 # Override the defaults specified here in a site-specific `pantheon.yml` file.
 # For more information see: https://pantheon.io/docs/pantheon-upstream-yml
 api_version: 1
-php_version: 7.3
+
+# PHP version
+php_version: 7.4
+
+# Database version
+database:
+  version: 10.4
+
+# Drush version 
+drush_version: 10
 
 # See https://pantheon.io/docs/pantheon-yml/#enforce-https--hsts for valid values.
 enforce_https: transitional
@@ -11,12 +20,15 @@ enforce_https: transitional
 # Nested Docroot
 web_docroot: true
 
+# Avoid coomplications not to run Integrated Composer
+build_step: false
+
 # See https://pantheon.io/docs/pantheon-yml#protected-web-paths for usage.
 protected_web_paths:
-  - /web/private/
-  - /web/sites/default/files/private/
-  - /web/sites/default/config/
-  - /web/sites/default/files/config/
+  - /private/
+  - /sites/default/files/private/
+  - /sites/default/config/
+  - /sites/default/files/config/
 
 # By default, any 'protected_web_paths' added to the pantheon.yml file
 # are combined with the paths from the pantheon.upstream.yml file. If
@@ -24,8 +36,6 @@ protected_web_paths:
 # are disabled.
 protected_web_paths_override: false
 
-# Database version
-database:
-  version: 10.4
+
   
   
