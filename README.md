@@ -21,3 +21,25 @@ composer prepare-for-pantheon
 composer install --no-dev
 ```
 
+Working with Lando
+
+
+`lando init --source=pantheon`
+
+Edit .lando.yml and add the line at the bottom.  
+
+```
+services:
+  database:
+    type: mariadb:10.4
+```
+
+Issue lando rebuild, start then pull 
+
+```
+lando rebuild
+lando start
+lando pull
+```
+
+
