@@ -40,6 +40,7 @@ Issue lando rebuild, start then pull
 lando rebuild
 lando start
 lando pull
+lando drush cr
 ```
 
 
