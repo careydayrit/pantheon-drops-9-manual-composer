@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => '6ec49fa7e872061df0b051efe6ebd7f87d84e6a1',
         'name' => 'pantheon-systems/example-drops-8-composer',
         'dev' => true,
     ),
@@ -1046,12 +1046,12 @@
             'dev_requirement' => false,
         ),
         'pantheon-systems/example-drops-8-composer' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '6ec49fa7e872061df0b051efe6ebd7f87d84e6a1',
             'dev_requirement' => false,
         ),
         'pantheon-systems/quicksilver-pushback' => array(
@@ -1120,8 +1120,8 @@
         'psr/container-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0',
-                1 => '^1.0',
+                0 => '^1.0',
+                1 => '1.0',
             ),
         ),
         'psr/event-dispatcher-implementation' => array(
