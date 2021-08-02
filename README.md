@@ -26,9 +26,12 @@ Working with Lando
 
 `lando init --source=pantheon`
 
-Edit .lando.yml and add the line at the bottom.  
+Edit .lando.yml and add the line at the bottom.  Chane the framework to drupal 9
 
 ```
+config:
+  framework: drupal9
+
 services:
   database:
     type: mariadb:10.4
