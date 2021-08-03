@@ -13,7 +13,7 @@ Avoid confusion by moving your site to an empty upstream:
 terminus site:upstream:set <sitename> empty
 ```
 
-Ongoing Core Updates
+## Ongoing Core Updates
 
 ```
 composer update drupal/core --with-dependencies
@@ -21,7 +21,7 @@ composer prepare-for-pantheon
 composer install --no-dev
 ```
 
-Working with Lando
+## Working with Lando
 
 
 `lando init --source=pantheon`
