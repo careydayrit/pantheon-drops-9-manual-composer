@@ -764,6 +764,7 @@ class ComposerStaticInit279aa556862ff74d59193e8d31191ccb
         'Consolidation\\Log\\LogOutputStylerInterface' => __DIR__ . '/..' . '/consolidation/log/src/LogOutputStylerInterface.php',
         'Consolidation\\Log\\Logger' => __DIR__ . '/..' . '/consolidation/log/src/Logger.php',
         'Consolidation\\Log\\LoggerManager' => __DIR__ . '/..' . '/consolidation/log/src/LoggerManager.php',
+        'Consolidation\\Log\\SettableLogOutputStreamInterface' => __DIR__ . '/..' . '/consolidation/log/src/SettableLogOutputStreamInterface.php',
         'Consolidation\\Log\\StylableLoggerInterface' => __DIR__ . '/..' . '/consolidation/log/src/StylableLoggerInterface.php',
         'Consolidation\\Log\\SymfonyLogOutputStyler' => __DIR__ . '/..' . '/consolidation/log/src/SymfonyLogOutputStyler.php',
         'Consolidation\\Log\\UnstyledLogOutputStyler' => __DIR__ . '/..' . '/consolidation/log/src/UnstyledLogOutputStyler.php',

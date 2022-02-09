@@ -245,6 +245,7 @@ return array(
     'Consolidation\\Log\\LogOutputStylerInterface' => $vendorDir . '/consolidation/log/src/LogOutputStylerInterface.php',
     'Consolidation\\Log\\Logger' => $vendorDir . '/consolidation/log/src/Logger.php',
     'Consolidation\\Log\\LoggerManager' => $vendorDir . '/consolidation/log/src/LoggerManager.php',
+    'Consolidation\\Log\\SettableLogOutputStreamInterface' => $vendorDir . '/consolidation/log/src/SettableLogOutputStreamInterface.php',
     'Consolidation\\Log\\StylableLoggerInterface' => $vendorDir . '/consolidation/log/src/StylableLoggerInterface.php',
     'Consolidation\\Log\\SymfonyLogOutputStyler' => $vendorDir . '/consolidation/log/src/SymfonyLogOutputStyler.php',
     'Consolidation\\Log\\UnstyledLogOutputStyler' => $vendorDir . '/consolidation/log/src/UnstyledLogOutputStyler.php',
