@@ -26,7 +26,7 @@ composer install --no-dev
 
 `lando init --source=pantheon`
 
-Edit .lando.yml and add the line at the bottom.  Chane the framework to drupal 9
+Edit .lando.yml and add the line at the bottom.  Change the framework to drupal 9
 
 ```
 config:
