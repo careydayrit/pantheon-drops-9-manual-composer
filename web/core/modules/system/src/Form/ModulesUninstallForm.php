@@ -2,13 +2,16 @@
 
 namespace Drupal\system\Form;
 
+use Drupal\Core\Extension\ExtensionLifecycle;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ModuleInstallerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\KeyValueStore\KeyValueStoreExpirableInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Update\UpdateHookRegistry;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -143,8 +146,22 @@ class ModulesUninstallForm extends FormBase {
       return $form;
     }
 
-    // Sort all modules by their name.
-    uasort($uninstallable, [ModuleExtensionList::class, 'sortByName']);
+    // Deprecated and obsolete modules should appear at the top of the
+    // uninstallation list.
+    $unstable_lifecycle = array_flip([
+      ExtensionLifecycle::DEPRECATED,
+      ExtensionLifecycle::OBSOLETE,
+    ]);
+
+    // Sort all modules by their lifecycle identifier and name.
+    uasort($uninstallable, function ($a, $b) use ($unstable_lifecycle) {
+      $lifecycle_a = isset($unstable_lifecycle[$a->info[ExtensionLifecycle::LIFECYCLE_IDENTIFIER]]) ? -1 : 1;
+      $lifecycle_b = isset($unstable_lifecycle[$b->info[ExtensionLifecycle::LIFECYCLE_IDENTIFIER]]) ? -1 : 1;
+      if ($lifecycle_a === $lifecycle_b) {
+        return ModuleExtensionList::sortByName($a, $b);
+      }
+      return $lifecycle_a <=> $lifecycle_b;
+    });
     $validation_reasons = $this->moduleInstaller->validateUninstall(array_keys($uninstallable));
 
     $form['uninstall'] = ['#tree' => TRUE];
@@ -154,6 +171,21 @@ class ModulesUninstallForm extends FormBase {
       $form['modules'][$module->getName()]['name']['#markup'] = $name;
       $form['modules'][$module->getName()]['description']['#markup'] = $this->t($module->info['description']);
 
+      $lifecycle = $module->info[ExtensionLifecycle::LIFECYCLE_IDENTIFIER];
+      if ($lifecycle !== ExtensionLifecycle::STABLE && !empty($module->info[ExtensionLifecycle::LIFECYCLE_LINK_IDENTIFIER])) {
+        $form['modules'][$module->getName()]['name']['#markup'] .= ' ' . Link::fromTextAndUrl('(' . $this->t('@lifecycle', ['@lifecycle' => ucfirst($lifecycle)]) . ')',
+            Url::fromUri($module->info[ExtensionLifecycle::LIFECYCLE_LINK_IDENTIFIER], [
+              'attributes' =>
+                [
+                  'class' => 'module-link--non-stable',
+                  'aria-label' => $this->t('View information on the @lifecycle status of the module @module', [
+                    '@lifecycle' => ucfirst($lifecycle),
+                    '@module' => $module->info['name'],
+                  ]),
+                ],
+            ])
+          )->toString();
+      }
       $form['uninstall'][$module->getName()] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Uninstall @module module', ['@module' => $name]),

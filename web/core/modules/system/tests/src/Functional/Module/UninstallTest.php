@@ -59,8 +59,42 @@ class UninstallTest extends BrowserTestBase {
     ]);
     $node->save();
 
+    // Change the config directly to "install" non-stable modules.
+    $this->config('core.extension')
+      ->set('module.system_status_obsolete_test', 0)
+      ->set('module.deprecated_module', 0)
+      ->set('module.experimental_module_test', 0)
+      ->save();
+    $this->rebuildAll();
+
     $this->drupalGet('admin/modules/uninstall');
     $this->assertSession()->titleEquals('Uninstall | Drupal');
+
+    // Check that the experimental module link was rendered correctly.
+    $this->assertSession()->elementExists('xpath', "//a[contains(@aria-label, 'View information on the Experimental status of the module Experimental Test')]");
+    $this->assertSession()->elementExists('xpath', "//a[contains(@href, 'https://example.com/experimental')]");
+
+    // Check that the deprecated module link was rendered correctly.
+    $this->assertSession()->elementExists('xpath', "//a[contains(@aria-label, 'View information on the Deprecated status of the module Deprecated module')]");
+    $this->assertSession()->elementExists('xpath', "//a[contains(@href, 'http://example.com/deprecated')]");
+
+    // Check that the obsolete module link was rendered correctly.
+    $this->assertSession()->elementExists('xpath', "//a[contains(@aria-label, 'View information on the Obsolete status of the module System obsolete status test')]");
+    $this->assertSession()->elementExists('xpath', "//a[contains(@href, 'https://example.com/obsolete')]");
+
+    $form = $this->assertSession()->elementExists('xpath', "//form[@id='system-modules-uninstall']");
+    $form_html = $form->getOuterHtml();
+
+    // Select the first stable module on the uninstall list.
+    $module_stable = $this->assertSession()->elementExists('xpath', "//label[contains(@class, 'module-name') and not(./a[contains(@class, 'module-link--non-stable')])]")->getOuterHtml();
+
+    // Select the unstable modules (deprecated, and obsolete).
+    $module_unstable_1 = $this->assertSession()->elementExists('xpath', "//label[./a[contains(@aria-label, 'View information on the Deprecated status of the module Deprecated module')]]")->getOuterHtml();
+    $module_unstable_2 = $this->assertSession()->elementExists('xpath', "//label[./a[contains(@aria-label, 'View information on the Obsolete status of the module System obsolete status test')]]")->getOuterHtml();
+
+    // Check that all unstable modules appear before the first stable module.
+    $this->assertGreaterThan(strpos($form_html, $module_unstable_1), strpos($form_html, $module_stable));
+    $this->assertGreaterThan(strpos($form_html, $module_unstable_2), strpos($form_html, $module_stable));
 
     foreach (\Drupal::service('extension.list.module')->getAllInstalledInfo() as $module => $info) {
       $field_name = "uninstall[$module]";

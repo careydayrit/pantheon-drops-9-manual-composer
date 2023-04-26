@@ -107,6 +107,18 @@ class LibraryDiscoveryParser {
    *   Thrown when a library has no js/css/setting.
    * @throws \UnexpectedValueException
    *   Thrown when a js file defines a positive weight.
+   * @throws \UnknownExtensionTypeException
+   *   Thrown when the extension type is unknown.
+   * @throws \UnknownExtensionException
+   *   Thrown when the extension is unknown.
+   * @throws \InvalidLibraryFileException
+   *   Thrown when the library file is invalid.
+   * @throws \InvalidLibrariesOverrideSpecificationException
+   *   Thrown when a definition refers to a non-existent library.
+   * @throws \Drupal\Core\Asset\Exception\LibraryDefinitionMissingLicenseException
+   *   Thrown when a library definition has no license information.
+   * @throws \LogicException
+   *   Thrown when a header key in a library definition is invalid.
    */
   public function buildByExtension($extension) {
     if ($extension === 'core') {
@@ -366,7 +378,7 @@ class LibraryDiscoveryParser {
 
     // Allow modules to add dynamic library definitions.
     $hook = 'library_info_build';
-    if ($this->moduleHandler->implementsHook($extension, $hook)) {
+    if ($this->moduleHandler->hasImplementations($hook, $extension)) {
       $libraries = NestedArray::mergeDeep($libraries, $this->moduleHandler->invoke($extension, $hook));
     }
 
@@ -544,7 +556,7 @@ class LibraryDiscoveryParser {
         return 2;
       }
       $categories[] = $category;
-      foreach ($files as $source => $options) {
+      foreach ($files as $options) {
         if (!is_array($options)) {
           return 1;
         }

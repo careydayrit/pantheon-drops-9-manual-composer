@@ -8,6 +8,7 @@ use Drupal\views\Entity\View;
  * Tests display of aggregator items on the page.
  *
  * @group aggregator
+ * @group legacy
  */
 class AggregatorRenderingTest extends AggregatorTestBase {
 
@@ -23,6 +24,9 @@ class AggregatorRenderingTest extends AggregatorTestBase {
    */
   protected $defaultTheme = 'stark';
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp(): void {
     parent::setUp();
 
@@ -99,6 +103,8 @@ class AggregatorRenderingTest extends AggregatorTestBase {
     $feed = $this->createFeed();
     $this->updateFeedItems($feed, 30);
 
+    // Request page with no feed items to ensure cache context is set correctly.
+    $this->drupalGet('aggregator', ['query' => ['page' => 2]]);
     // Check for presence of an aggregator pager.
     $this->drupalGet('aggregator');
     $this->assertSession()->elementExists('xpath', '//ul[contains(@class, "pager__items")]');
